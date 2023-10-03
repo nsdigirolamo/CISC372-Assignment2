@@ -180,7 +180,7 @@ int main(int argc,char** argv){
 	int current_rank;
 	MPI_Comm_rank(MPI_COMM_WORLD, &current_rank);
 
-	int localStraightFlushes = 0
+	int localStraightFlushes = 0;
 	Hand pokerHand;
 	srand(time(0));
 	int trial_count;
