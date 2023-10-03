@@ -191,11 +191,11 @@ int main(int argc,char** argv){
 	trials_to_do += current_rank < leftover_trials ? 1 : 0;
 
 	if (current_rank == 0) {
-		printf("Process %d has detected %d leftover trials!");
+		printf("Process %d has detected %d leftover trials!", current_rank, leftover_trials);
 	}
 
 	if (current_rank < leftover_trials) {
-		printf("I am process %d and I have an additional trial to complete!");
+		printf("I am process %d and I have an additional trial to complete!", current_rank);
 	}
 
 	for (int i = 0; i < trials_to_do; i++) {
@@ -213,14 +213,14 @@ int main(int argc,char** argv){
 		printHand(pokerHand);
 #endif
 		if (isStraightFlush(pokerHand))
-			local_straightFlushes++;
+			localStraightFlushes++;
 	}
 
-	MPI_Reduce(&local_straightFlushes, &global_straightFlushes, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+	MPI_Reduce(&localStraightFlushes, &globalStraightFlushes, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
 	if (current_rank == 0) {
-		float percent = (float)(global_straightFlushes) / ((float)(cnt) * 100.0);
-		printf("We found %d straight flushes out of %d hands or %f percent.\n", global_straightFlushes, cnt, percent);
+		float percent = (float)(globalStraightFlushes) / ((float)(cnt) * 100.0);
+		printf("We found %d straight flushes out of %d hands or %f percent.\n", globalStraightFlushes, cnt, percent);
 	}
 
 	MPI_Finalize();
