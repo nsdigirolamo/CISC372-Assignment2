@@ -183,20 +183,23 @@ int main(int argc,char** argv){
 	int localStraightFlushes, globalStraightFlushes = 0;
 	Hand pokerHand;
 	srand(time(0));
-	int cnt;
-	getTotalTrials(&cnt, current_rank);
+	int trial_count;
+	getTotalTrials(&trial_count, current_rank);
 
-	int trials_to_do = cnt / process_count;
-	int leftover_trials = cnt % process_count;
+	int trials_to_do = trial_count / process_count;
+	int leftover_trials = trial_count % process_count;
 	trials_to_do += current_rank < leftover_trials ? 1 : 0;
 
+	#ifdef DEBUG
 	if (current_rank == 0) {
-		printf("Process %d has detected %d leftover trials!", current_rank, leftover_trials);
+		printf("PROCESS %d", current_rank);
+		printf("leftover_trials: %d\n", leftover_trials);
+		printf("(trial_count: %d) / (process_count: %d) = (trials_to_do: %d)\n\n", trial_count, process_count, trials_to_do);
 	}
-
 	if (current_rank < leftover_trials) {
 		printf("I am process %d and I have an additional trial to complete!", current_rank);
 	}
+	#endif
 
 	for (int i = 0; i < trials_to_do; i++) {
 		int cardCount=0;
@@ -209,9 +212,6 @@ int main(int argc,char** argv){
 				cardCount++;
 			}
 		}
-#ifdef DEBUG
-		printHand(pokerHand);
-#endif
 		if (isStraightFlush(pokerHand))
 			localStraightFlushes++;
 	}
@@ -219,8 +219,8 @@ int main(int argc,char** argv){
 	MPI_Reduce(&localStraightFlushes, &globalStraightFlushes, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
 	if (current_rank == 0) {
-		float percent = (float)(globalStraightFlushes) / ((float)(cnt) * 100.0);
-		printf("We found %d straight flushes out of %d hands or %f percent.\n", globalStraightFlushes, cnt, percent);
+		float percent = (float)(globalStraightFlushes) / ((float)(trial_count) * 100.0);
+		printf("We found %d straight flushes out of %d hands or %f percent.\n", globalStraightFlushes, trial_count, percent);
 	}
 
 	MPI_Finalize();
