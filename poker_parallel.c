@@ -231,7 +231,7 @@ int main(int argc,char** argv){
 	if (current_rank == 0) {
 		float percent = ((float)(globalStraightFlushes) / (float)(trial_count)) * 100.0;
 		printf("We found %d straight flushes out of %d hands or %f percent.\n", globalStraightFlushes, trial_count, percent);
-		printf("Completed main loop and MPI_Reduce() in %f seconds." t2 - t1);
+		printf("Completed main loop and MPI_Reduce() in %f seconds.", t2 - t1);
 	}
 
 	MPI_Finalize();
