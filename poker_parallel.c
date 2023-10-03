@@ -93,7 +93,7 @@ int isStraightFlush(Hand hand){
 		}
 	if (hand[4].rank==hand[3].rank+1 && hand[3].rank==hand[2].rank+1 && hand[2].rank==hand[1].rank+1 && (hand[1].rank==hand[0].rank+1 || (hand[0].rank==1 && hand[4].rank==13))){
 #ifdef DEBUG
-		printf("is a straight flush\n");
+		printf("Found a straight flush!\n");
 #endif
 		return -1;
 	}
@@ -192,7 +192,7 @@ int main(int argc,char** argv){
 
 	#ifdef DEBUG
 	if (current_rank == 0) {
-		printf("PROCESS %d", current_rank);
+		printf("PROCESS %d\n", current_rank);
 		printf("leftover_trials: %d\n", leftover_trials);
 		printf("(trial_count: %d) / (process_count: %d) = (trials_to_do: %d)\n\n", trial_count, process_count, trials_to_do);
 	}
