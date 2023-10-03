@@ -205,12 +205,12 @@ int main(int argc,char** argv){
 		printHand(pokerHand);
 #endif
 		if (isStraightFlush(pokerHand))
-			straightFlushes++;
+			local_straightFlushes++;
 	}
 
 	MPI_Reduce(&local_straightFlushes, &global_straightFlushes, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
-	if (rank == 0) {
+	if (current_rank == 0) {
 		float percent = (float)(global_straightFlushes) / ((float)(cnt) * 100.0);
 		printf("We found %d straight flushes out of %d hands or %f percent.\n", global_straightFlushes, cnt, percent);
 	}
