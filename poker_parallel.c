@@ -180,7 +180,7 @@ int main(int argc,char** argv){
 	int current_rank;
 	MPI_Comm_rank(MPI_COMM_WORLD, &current_rank);
 
-	int localStraightFlushes, globalStraightFlushes = 0;
+	int localStraightFlushes = 0
 	Hand pokerHand;
 	srand(time(0));
 	int trial_count;
@@ -216,6 +216,7 @@ int main(int argc,char** argv){
 			localStraightFlushes++;
 	}
 
+	int globalStraightFlushes = 0;
 	MPI_Reduce(&localStraightFlushes, &globalStraightFlushes, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
 	if (current_rank == 0) {
