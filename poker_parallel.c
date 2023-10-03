@@ -219,7 +219,7 @@ int main(int argc,char** argv){
 	MPI_Reduce(&localStraightFlushes, &globalStraightFlushes, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
 	if (current_rank == 0) {
-		float percent = (float)(globalStraightFlushes) / ((float)(trial_count) * 100.0);
+		float percent = ((float)(globalStraightFlushes) / (float)(trial_count)) * 100.0;
 		printf("We found %d straight flushes out of %d hands or %f percent.\n", globalStraightFlushes, trial_count, percent);
 	}
 
