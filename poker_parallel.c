@@ -180,7 +180,7 @@ int main(int argc,char** argv){
 	int current_rank;
 	MPI_Comm_rank(MPI_COMM_WORLD, &current_rank);
 
-	int local_straightFlushes, global_straightFlushes = 0;
+	int localStraightFlushes, globalStraightFlushes = 0;
 	Hand pokerHand;
 	srand(time(0));
 	int cnt;
@@ -189,6 +189,14 @@ int main(int argc,char** argv){
 	int trials_to_do = cnt / process_count;
 	int leftover_trials = cnt % process_count;
 	trials_to_do += current_rank < leftover_trials ? 1 : 0;
+
+	if (current_rank == 0) {
+		printf("Process %d has detected %d leftover trials!");
+	}
+
+	if (current_rank < leftover_trials) {
+		printf("I am process %d and I have an additional trial to complete!");
+	}
 
 	for (int i = 0; i < trials_to_do; i++) {
 		int cardCount=0;
