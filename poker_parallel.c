@@ -192,12 +192,11 @@ int main(int argc,char** argv){
 
 	#ifdef DEBUG
 	if (current_rank == 0) {
-		printf("PROCESS %d\n", current_rank);
 		printf("leftover_trials: %d\n", leftover_trials);
-		printf("(trial_count: %d) / (process_count: %d) = (trials_to_do: %d)\n\n", trial_count, process_count, trials_to_do);
+		printf("(trial_count: %d) / (process_count: %d) = (trials_to_do: %d)\n", trial_count, process_count, trials_to_do);
 	}
 	if (current_rank < leftover_trials) {
-		printf("I am process %d and I have an additional trial to complete!", current_rank);
+		printf("I am process %d and I have an additional trial to complete!\n", current_rank);
 	}
 	#endif
 
