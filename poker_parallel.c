@@ -168,6 +168,8 @@ void makeStraightFlush3(Hand hand){
 
 int main(int argc,char** argv){
 
+	int t1, t2;
+
 	// Creates the world communicator.
 	MPI_Init(&argc, &argv);
 
@@ -190,7 +192,7 @@ int main(int argc,char** argv){
 	int leftover_trials = trial_count % process_count;
 	trials_to_do += current_rank < leftover_trials ? 1 : 0;
 
-	#ifdef DEBUG
+#ifdef DEBUG
 	if (current_rank == 0) {
 		printf("leftover_trials: %d\n", leftover_trials);
 		printf("(trial_count: %d) / (process_count: %d) = (trials_to_do: %d)\n", trial_count, process_count, trials_to_do);
@@ -198,7 +200,11 @@ int main(int argc,char** argv){
 	if (current_rank < leftover_trials) {
 		printf("I am process %d and I have an additional trial to complete!\n", current_rank);
 	}
-	#endif
+#endif
+
+	if (current_rank == 0) {
+		t1 = MPI_Wtime();
+	}
 
 	for (int i = 0; i < trials_to_do; i++) {
 		int cardCount=0;
@@ -219,8 +225,13 @@ int main(int argc,char** argv){
 	MPI_Reduce(&localStraightFlushes, &globalStraightFlushes, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
 	if (current_rank == 0) {
+		t1 = MPI_Wtime();
+	}
+
+	if (current_rank == 0) {
 		float percent = ((float)(globalStraightFlushes) / (float)(trial_count)) * 100.0;
 		printf("We found %d straight flushes out of %d hands or %f percent.\n", globalStraightFlushes, trial_count, percent);
+		printf("Completed main loop and MPI_Reduce() in %f seconds." t2 - t1);
 	}
 
 	MPI_Finalize();
